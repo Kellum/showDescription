@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Description Preview Power-Up</title>
+  <script src="https://p.trellocdn.com/power-up.min.js"></script>
+</head>
+<body>
+  <script>
+    // Initialize Trello Power-Up
+    var t = window.TrelloPowerUp.iframe();
+
+    // Default number of lines
+    var DEFAULT_LINES = 2;
+
+    window.TrelloPowerUp.initialize({
+      'card-badges': function(t, options) {
+        // Get the number of lines setting for this board
+        return t.get('board', 'shared', 'descriptionLines', DEFAULT_LINES)
+          .then(function(lineCount) {
+            // Get the card's description
+            return t.card('desc')
+              .then(function(card) {
+                if (!card.desc || card.desc.trim() === '') {
+                  return [];
+                }
+
+                // Split description into lines and take the specified number
+                var lines = card.desc.split('\n');
+                var displayLines = lines.slice(0, lineCount);
+                var preview = displayLines.join('\n');
+
+                // Truncate if still too long (max ~100 chars for badge)
+                if (preview.length > 100) {
+                  preview = preview.substring(0, 97) + '...';
+                }
+
+                return [{
+                  text: preview,
+                  color: 'blue'
+                }];
+              });
+          });
+      },
+      'show-settings': function(t, options) {
+        // Show the settings UI
+        return t.popup({
+          title: 'Description Preview Settings',
+          url: './settings.html',
+          height: 184
+        });
+      }
+    });
+  </script>
+</body>
+</html>

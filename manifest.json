@@ -1,0 +1,17 @@
+{
+  "name": "Description Preview",
+  "details": "Display card descriptions directly on cards",
+  "icon": {
+    "url": "./icon.png"
+  },
+  "author": "Ryan Kellum",
+  "capabilities": [
+    "card-badges",
+    "show-settings"
+  ],
+  "connectors": {
+    "iframe": {
+      "url": "./index.html"
+    }
+  }
+}
